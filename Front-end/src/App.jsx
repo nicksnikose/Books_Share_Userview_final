@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser } from "./features/auth/authSlice";
+import Notification from "./pages/Notification";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -87,6 +88,12 @@ const App = () => {
             <Protected>
               <MyBooks />
             </Protected>
+          }
+        />
+         <Route
+          path="/notification"
+          element={
+              <Notification />
           }
         />
       </Routes>

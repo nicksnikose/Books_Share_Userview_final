@@ -110,8 +110,10 @@ function NavList() {
 
   const Navigate = useNavigate()
   const user = useSelector(selectLoggedInUser)
- 
+ const [data1,setData]=useState([])
   const [Quantity,setQuantity] = useState(0)
+  const [Quantity1,setQuantity1] = useState(0)
+
     
   useEffect(()=>{
    const getcart =async () =>{
@@ -119,14 +121,32 @@ function NavList() {
       method: 'GET'
     })
     const data = await response.json()
-    console.log(data.length)
-    setQuantity(data.length)
    
+    // console.log(data.length)
+    setQuantity(data.length)
    }
    getcart()
   },[])
 
+
+  useEffect(()=>{
+  
+    const getproduct =async ()=>{
+      const product = await fetch(`http://localhost:5000/products/${user._id}`)
+      const data = await product.json()
+      console.log(data)
+      setData(data)
+    }
+    getproduct()
+    
+      },[]);
+      
 const product = useSelector(selectItems)
+
+ const not = data1.filter((item)=>{
+       return item.bargain === 'no'
+ })
+ console.log(not.length)
 
 
   return (
@@ -192,12 +212,17 @@ const product = useSelector(selectItems)
       <Typography >
        
       <Menu>
+      
       <MenuHandler>
-        {/* <Button>Open Menu</Button> */}
-        <ListItem>    { !user ?(<Avatar src="./user-profile.png" alt="avtar" className='w-6 h-6 sm:items-center lg:-mt-2' variant='rounded'/>
-):(      <Avatar src={`./userProfile/${user?.img}`} alt="avtar" className='w-6 h-6 sm:items-center lg:-mt-2' variant='rounded'/>
+    
+        <ListItem>  
+            { !user ?(<Avatar src="./user-profile.png" alt="avtar" className='h-[18px] w-[18px]' variant='rounded'/>
+):(      <Avatar src={`./userProfile/${user?.img}`} alt="avtar" className='w-5 h-5 sm:items-center lg:-mt-2' variant='rounded'/>
 )
-          }    
+          }   
+          <span className="  rounded-md   -mt-6  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                      {not.length}
+                    </span>
       </ListItem >
       </MenuHandler>
       <MenuList>
@@ -207,10 +232,14 @@ const product = useSelector(selectItems)
         </Link>
         <Protected>
         <Link to ='/myproduct'>
-        <MenuItem>My Books </MenuItem>
+        <MenuItem>My Books <span className="  rounded-md    bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+                      {not.length}
+                    </span> </MenuItem>
         </Link>
         </Protected>
         <MenuItem>View</MenuItem>
+        <Link to ='/notification'>
+        <MenuItem>Notification</MenuItem></Link>
         <MenuItem >Logout</MenuItem>
       </MenuList>
    </Menu>

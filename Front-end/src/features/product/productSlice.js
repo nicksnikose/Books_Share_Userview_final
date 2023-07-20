@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import {createProduct,getProducts} from "./productAPI"
 
 const initialState = {
- product: null,
+ products: null,
   status: 'idle',
 };
 
@@ -27,7 +27,7 @@ export const getProductsAsync = createAsyncThunk(
 
 
 export const counterSlice = createSlice({
-  name: 'cart',
+  name: 'product',
   initialState,
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
@@ -46,20 +46,20 @@ export const counterSlice = createSlice({
       })
       .addCase(createProductAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.product = action.payload;
+        state.products = action.payload;
       })
       .addCase(getProductsAsync.pending, (state) => {
         state.status = 'loading';
       })
       .addCase(getProductsAsync.fulfilled, (state, action) => {
         state.status = 'idle';
-        state.product = action.payload;
+        state.products = action.payload;
       })
   },
 });
 
 
-export const selectProduct = (state)=>state.auth.product
+export const selectProduct = (state)=>state.auth.products
 export const selectError = (state)=>state.auth.error;
 export const { increment} = counterSlice.actions;
 export default counterSlice.reducer;

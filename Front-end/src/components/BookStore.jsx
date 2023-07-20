@@ -35,7 +35,15 @@ export default function Example({ product }) {
       setProducts(data);
     };
     getproduct();
+    
   }, []);
+
+
+  
+  const prod = products.filter((product) =>{
+    return product.status === "accept"
+  })
+  console.log([prod])
 
   return (
     <div>
@@ -62,7 +70,7 @@ export default function Example({ product }) {
         <div className="  grid lg:grid-cols-4 md:grid-cols-2 mt-3 sm:grid-cols-1 ">
           {/* card one */}
 
-          {products.map((item) => (
+          {prod.map((item) => (
             <Card
               className="w-64 bg-[#FFFFFF] item-center  mx-auto mb-5"
               key={item._id}
@@ -78,13 +86,17 @@ export default function Example({ product }) {
               </CardHeader>
               <CardBody>
                 <div className="flex items-center justify-between mb-2">
-                  <Typography className="font-medium text-center text-[14px]">
+               
+                  <Typography className=" text-center font-extrabold mx-auto ">
                     {item.title}
                   </Typography>
+             
                 </div>
                 <Typography className="font-medium text-center">
-                  <span className="text-[#503E3E] text-[14px] pe-[20px]"></span>
-                  <span className="text-black text-[18px]">{item.price}</span>
+                <span className="text-[#503E3E] text-[14px] pe-[20px]">
+                  <strike>₹ {item.price*2}</strike>
+                </span>
+                <span className="text-black text-[18px]">₹ {item.price} </span>
                 </Typography>
               </CardBody>
               <CardFooter className="pt-0">

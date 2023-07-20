@@ -38,24 +38,35 @@ const signupSchema = new Schema({
         type:String,
         default: 'user-profile.png'
     },
+    role:{
+      type:String,
+      default:"user"
+    },
     otp:{
       type:Number
     },
     bookimg:{
     type:String,
     default:"book.jpg"
+    },
+    role:{
+      type:String,
+      default:"user"
     }
 
 });
 
 
-const productSchema=new Schema({
+const productSchema = new Schema({
   title:{type:String, require:true},
   description:{type:String,require:true},
-  price:{type:Number,require:true},
+  price:{type:String,require:true},
   img:{type:String,default:"demo.jpg"},
   noofbooks:{type:String},
   type:{type:String},
+  status:{type:String,default:"Pending"},
+  bargain:{type:String,default:"no"},
+  message:{type:String,default:"Pending"},
   created: { type: mongoose.Schema.Types.ObjectId, ref: 'Signup', required: true },
 })
 

@@ -24,6 +24,7 @@ exports.getAllUsers = (req,res)=>{
 }
 
 
+
 //create all users  or registrer User
 
 exports.createUser = async (req,res,next)=>{  
@@ -92,6 +93,12 @@ exports.loginUser = async function(req, res, next) {
     });
   }
 
+
+
+
+  //user to admin view
+
+ 
 
   //getSingle User
 
@@ -273,33 +280,89 @@ exports.userCart = async (req,res)=>{
 
 // Send Otp for Forget Pass
 
+// exports.sendOtp = async (req, res) => {
+//   console.log(req.body);
+//   const _otp = Math.round(10000 + Math.random() * 90000);
+//   console.log(_otp);
+
+//   let user = await Signup.findOne({ email: req.body.email });
+//   if (!user) {
+//     return res.status(500).json({ message: "User not found" });
+//   }
+
+//   let transporter = nodemailer.createTransport({
+//     service: "gmail",
+//     port: 587,
+//     secureConnection: false,
+//     auth: {
+//       user: "mohodsameer84@gmail.com",
+//       pass: "jziypgnyzpyqfpdx",
+//     },
+//   });
+
+//   try {
+//     let info = await transporter.sendMail({
+//       from: "mohodsameer84@gmail.com",
+//       to: req.body.email,
+//       subject: "OTP",
+//       text: String(_otp),
+//       html: `<html><body> 
+//       <form>
+//         <button type="submit" >Submit</button>
+//       </form>
+//       <script type="text/javascript">alert("Hello")</script>
+//       </body></html>`,
+//     });
+
+//     if (info.messageId) {
+//       console.log(info, 84);
+//       Signup.updateOne({ email: req.body.email }, { otp: _otp })
+//         .then((result) => {
+//           res.status(200).json({ message: "OTP sent" });
+//         })
+//         .catch((err) => {
+//           res.status(500).json({ message: "Server error" });
+//         });
+//     } else {
+//       res.status(500).json({ message: "Server error" });
+//     }
+//   } catch (error) {
+//     console.log("An error occurred while sending the OTP:", error);
+//     res.status(500).json({ message: "An error occurred while sending the OTP" });
+//   }
+// };
+
+
+
 exports.sendOtp = async (req, res) => {
   console.log(req.body);
   const _otp = Math.round(10000 + Math.random() * 90000);
   console.log(_otp);
 
-  let user = await Signup.findOne({ email: req.body.email });
-  if (!user) {
-    return res.status(500).json({ message: "User not found" });
-  }
+  // let user = await Signup.findOne({ email: req.body.email });
+  // if (!user) {
+  //   return res.status(500).json({ message: "User not found" });
+  // }
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
     port: 587,
     secureConnection: false,
     auth: {
-      user: "mohodsameer84@gmail.com",
-      pass: "jziypgnyzpyqfpdx",
+      user: "swapnilnikose04@gmail.com",
+      pass: "tohkrtkrjjcktraw",
     },
   });
 
   try {
     let info = await transporter.sendMail({
-      from: "mohodsameer84@gmail.com",
+      from: "swapnilnikose04@gmail.com",
       to: req.body.email,
       subject: "OTP",
       text: String(_otp),
-      html: `<html><body> Verify Your OTP: ${_otp} </body></html>`,
+      html: `<html><body> 
+      <h1>Your Bargening Price is sent in your Dashboard Of Bookshare...!</h1>
+      </body></html>`,
     });
 
     if (info.messageId) {
@@ -319,6 +382,7 @@ exports.sendOtp = async (req, res) => {
     res.status(500).json({ message: "An error occurred while sending the OTP" });
   }
 };
+
 
 
 /// Submit Otp and Verify

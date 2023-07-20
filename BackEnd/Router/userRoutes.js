@@ -7,6 +7,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 const nodemailer = require("nodemailer")
+const mail = require("../controller/mail")
 
 
 
@@ -56,13 +57,12 @@ router
   .put("/users/:id/image", upload.single("image"), userController.updateUserPhoto)
 
 
-
 //   .put("/users/:id/video", upload.single("video"), userController.updateUserVideo)
 //   .put("/users/:id/pdf", upload.single("pdf"), userController.updateUserpdf)
 
-// router
-//   .route("/sendotp")
-//   .post(userController.sendOtp)
+router
+  .route("/sendotp")
+  .post(userController.sendOtp)
      
 // router
 //   .route("/submitotp")

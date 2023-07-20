@@ -77,16 +77,12 @@ import {
     </CardHeader>
     <CardBody>
       <div className="flex items-center justify-between mb-2">
-        <Typography  className="font-medium text-center text-[14px]">
+        <Typography  className="font-extrabold mx-auto">
          {item.title}
         </Typography>
       </div>
       <Typography className="font-medium text-center">
-        <span className="text-[#503E3E] text-[14px] pe-[20px]">
-          
-          <strike></strike>
-        </span>
-        <span className="text-black text-[18px]">{item.price}</span>
+        <span className="text-black text-[18px]"></span>
       </Typography>
     </CardBody>
     <CardFooter className="pt-0">
@@ -97,7 +93,7 @@ import {
       >
         <center>
           {/* <TbShoppingCart  className="text text-[22px]" /> */}
-          SELL
+          {item.status}
         </center>
       </Button>
     </CardFooter>

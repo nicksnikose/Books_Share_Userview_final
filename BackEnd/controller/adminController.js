@@ -11,6 +11,8 @@ const loginToken = id => {
 
 
 
+
+
 exports.loginAdmin = async function(req, res, next) {
     const { email, password,role } = req.body;
     if (!email || !password) {
@@ -59,6 +61,37 @@ exports.loginAdmin = async function(req, res, next) {
     });
   }
 
+exports.updateprofile = async(req,res)=>{
+  const { id } = req.params;
+  const { email, firstName, lastName, phone } = req.body;
+
+  try {
+    const user = await Signup.findByIdAndUpdate(
+      {_id:id},
+      { $set: { email, firstName, lastName, phone } },
+      { new: true, runValidators: true }
+    ).select('+password');
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (req.file) {
+      // If a file is uploaded, update the image field
+      user.img = req.file.filename;
+    }
+
+    await user.save({ validateBeforeSave: false });
+    const updatedUser = await Signup.findById(id).select('+password');
+
+    res.json({
+      user: updatedUser,
+    });
+
+  } catch (error) {
+    res.status(500).json({ error: 'An error occurred' });
+  }
+}
 
 
   exports.updatemyprice = async function(req,res){

@@ -104,10 +104,10 @@ router.put("/products/:id/done", productController.accepted)  //getting user upl
 router.put("/products/:id/bargain", productController.bargain)  //getting user uploading product 
 router.delete("/products/:id/", productController.denied)  //getting user uploading product 
 
-
 router.post("/cart/addcart/", productController.Addcart)  //add to cart page user point of view
 
 router.get("/cart/getcart/:userId", productController.getcart) // getting thats carts
+
 
 
 

@@ -82,6 +82,7 @@ exports.creataProducts=  async (req, res) => {
     const newProduct = new Products({
       img: req.file.filename  ,
       title,
+      city,
       description,
       price,
       noofbooks,
@@ -169,6 +170,8 @@ exports.creataProducts=  async (req, res) => {
     console.error(error); // Log the error for debugging
     res.status(500).json({ error: 'Failed to retrieve cart items' });
   }
+
+
 };
       
         

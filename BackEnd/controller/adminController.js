@@ -10,9 +10,6 @@ const loginToken = id => {
   }
 
 
-
-
-
 exports.loginAdmin = async function(req, res, next) {
     const { email, password,role } = req.body;
     if (!email || !password) {

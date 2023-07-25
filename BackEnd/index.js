@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken")
 const productRoutes =require("./Router/productRoutes")
 const userRoutes =require("./Router/userRoutes")
 const adminRoutes =require("./Router/adminRoutes")
+const CartRoutes = require("./Router/cartRoutes")
 
 
 
@@ -23,6 +24,7 @@ mongoose.Promise=global.Promise
 
 ///Storage
 //initialize routes
+app.use("/", CartRoutes)
 app.use("/", adminRoutes)
 app.use("/",userRoutes);
 app.use("/", productRoutes)

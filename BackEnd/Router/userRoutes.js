@@ -64,8 +64,8 @@ router
   .route("/sendotp")
   .post(userController.sendOtp)
      
-// router
-//   .route("/submitotp")
+router
+  .route("/submitotp")
 //   .post(userController.submitOtp)
      
 module.exports = router;

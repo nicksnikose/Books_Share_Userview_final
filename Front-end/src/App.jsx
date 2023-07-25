@@ -24,6 +24,11 @@ import { fetchItemsByUserIdAsync } from "./features/cart/cartSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectLoggedInUser } from "./features/auth/authSlice";
 import Notification from "./pages/Notification";
+import OrderTracking from "./Buyer/OrderTracking";
+import Checkout from "./Buyer/Checkout";
+import Orderplaced from "./Buyer/Orderplaced";
+import Orderdetails from "./Buyer/Orderdetails";
+import OrderSummary from "./Buyer/OrderSummary";
 
 const App = () => {
   const dispatch = useDispatch();
@@ -96,6 +101,11 @@ const App = () => {
               <Notification />
           }
         />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/orderplaced" element={<Orderplaced />} />
+        <Route path="/trackorder" element={<OrderTracking />} />
+        <Route path="/orderdetails" element={<Orderdetails />} />
+        <Route path="/summary" element={<OrderSummary />} />
       </Routes>
     </div>
   );

@@ -59,6 +59,8 @@ const signupSchema = new Schema({
 
 const productSchema = new Schema({
   title:{type:String, require:true},
+  city:{type:String},
+  Date:{type:Date ,default: Date.now,},
   description:{type:String,require:true},
   price:{type:String,require:true},
   img:{type:String,default:"demo.jpg"},

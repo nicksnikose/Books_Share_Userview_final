@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const BookSellForm = () => {
   const [productData, setProductData] = useState({
@@ -22,18 +23,20 @@ const BookSellForm = () => {
     img: null,
   });
   const user = useSelector(selectLoggedInUser)
-  const dispatch=useDispatch()
+  const dispatch = useDispatch()
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProductData({ ...productData, [name]: value });
+    setSelectedCity({ ...productData, [name]: value });
   };
 
   const handleFileChange = (e) => {
     setProductData({ ...productData, img: e.target.files[0]});
   };
 
-
+const navigate = useNavigate()
+const [selectedCity, setSelectedCity] = useState("");
 
   return (
    
@@ -47,6 +50,7 @@ const BookSellForm = () => {
               const formData = new FormData();
               formData.append('title', productData.title);
               formData.append('description', productData.description);
+              formData.append('city', productData.city);
               formData.append('price', productData.price);
               formData.append('noofbooks', productData.noofbooks);
               formData.append('created', user._id);
@@ -61,6 +65,7 @@ const BookSellForm = () => {
         
               // Handle the response (e.g., show success message, redirect, etc.)
               console.log('Product created:', response.data);
+              navigate('/myproduct')
             } catch (error) {
               console.error('Error creating product:', error);
             }
@@ -288,16 +293,17 @@ const BookSellForm = () => {
                   <label htmlFor="">City in Maharashtra </label>
                   <div className="flex  flex-col gap-6">
                    
-                    <Select
+                   <Select
                       className="border rounded bg-white "
-                      label="select city"
+                      label="select " name="city" value={selectedCity}  onChange={handleChange}
                      >
-                      <Option value="Nagpur">Nagpur</Option>
-                      <Option value="Wardha">Wardha</Option>
-                      <Option value="Yavatmal">Yavatmal</Option>
-                      <Option value="Nashik">Nashik</Option>
-                      <Option value="Amravati">Amravati</Option>
-                    </Select>
+                      <Option value="Nagpur" name="Nagpur">Nagpur</Option>
+                      <Option value="Wardha" name="Wardha">Wardha</Option>
+                      <Option value="Yavatmal" name="Yavatmal">Yavatmal</Option>
+                      <Option value="Nashik" name="Nashik">Nashik</Option>
+                      <Option value="Amravati" name="Amravati">Amravati</Option>
+                    </Select> 
+                   
                   </div>
                 </div>
               </div>
@@ -354,6 +360,8 @@ const BookSellForm = () => {
                         </Button>
                       </Link>
                     
+                     
+                    
                       <Button
                         color="green"
                         type="submit"
@@ -361,6 +369,7 @@ const BookSellForm = () => {
                       >
                         Submit
                       </Button>
+                    
                    <div className="lg:text-[14px] text-[12px] py-3">
                         <span className="lg:text-[14px] text-[12px] text-center">For courier the books to us at :- G-5 Anand Rajani Apartment, IT park pin Code : 440022</span>
                        

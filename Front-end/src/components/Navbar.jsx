@@ -148,6 +148,9 @@ const product = useSelector(selectItems)
  })
  console.log(not.length)
 
+ const noti = data1.filter((item)=>{
+  return item.message === 'yes'
+ })
 
   return (
     <List className="mt-4 mb-6 p-0 lg:mt-0 lg:mb-0 lg:flex-row lg:p-1 lg:pr-[40px] ">
@@ -203,7 +206,7 @@ const product = useSelector(selectItems)
         <Link to="/cart">
         <ListItem className="flex items-center gap-2 py-2 pr-10 hover:bg-green-700 hover:text-white">
           <BsCart3 className="h-[18px] w-[18px]" />
-          <span className="  rounded-md  -ml-3 -mt-5  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+          <span className="  rounded-pill  -ml-3 -mt-5  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
                       {Quantity}
                     </span>
         </ListItem>
@@ -220,27 +223,32 @@ const product = useSelector(selectItems)
 ):(      <Avatar src={`./userProfile/${user?.img}`} alt="avtar" className='w-5 h-5 sm:items-center lg:-mt-2' variant='rounded'/>
 )
           }   
-          <span className="  rounded-md   -mt-6  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
+          {/* <span className=" rounded-md   -mt-6  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
                       {not.length}
-                    </span>
+                    </span> */}
+          <span  className="translate-middle p-1 text-xs  bg-green-600 border border-light rounded-circle w-[10px] -mt-3 ">
+          </span>
+        
       </ListItem >
       </MenuHandler>
-      <MenuList>
-        <MenuItem><b>{user?.firstName}</b></MenuItem>
+      <MenuList >
+        <MenuItem className='hover:bg-green-700 hover:text-white'><b>{user?.firstName}</b></MenuItem>
         <Link to="/edit">
-        <MenuItem>Edit </MenuItem>
+        <MenuItem className='hover:bg-green-700 hover:text-white'>Edit </MenuItem>
         </Link>
         <Protected>
         <Link to ='/myproduct'>
-        <MenuItem>My Books <span className="  rounded-md    bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">
-                      {not.length}
-                    </span> </MenuItem>
+        <MenuItem className='hover:bg-green-700 hover:text-white'>My Books 
+        <sup className="rounded-pill  -mt-6  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">{not.length}</sup>
+        </MenuItem>
         </Link>
         </Protected>
-        <MenuItem>View</MenuItem>
+        <MenuItem className='hover:bg-green-700 hover:text-white'>View</MenuItem>
         <Link to ='/notification'>
-        <MenuItem>Notification</MenuItem></Link>
-        <MenuItem >Logout</MenuItem>
+        <MenuItem className='hover:bg-green-700 hover:text-white'>Notification 
+        <sup className="rounded-pill  -mt-6  bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/10">{noti.length}</sup>
+        </MenuItem></Link>
+        <MenuItem className='hover:bg-green-700 hover:text-white'>Logout</MenuItem>
       </MenuList>
    </Menu>
 

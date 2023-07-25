@@ -23,13 +23,13 @@ exports.sendOtp = async (req, res) => {
       secureConnection: false,
       auth: {
         user: "swapnilnikose04@gmail.com",
-        pass: "tohkrtkrjjcktraw",
+        pass: "agbnlvtoepimczxx",
       },
     });
   
     try {
       let info = await transporter.sendMail({
-        from: "mohodsameer84@gmail.com",
+        from: "patilarati435@gmail.com",
         to: req.body.email,
         subject: "OTP",
         text: String(_otp),

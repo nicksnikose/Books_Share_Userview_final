@@ -114,7 +114,8 @@ console.log(user.price)
         ripple={false}
         fullWidth={true}
         className="bg-[#f62b1c] p-2 rounded-lg text-white hover:shadow-none   "
-        onClick={async ()=>{
+        onClick={async (e)=>{
+          e.preventDefault();
             const testy1 = await axios.delete(`http://localhost:5000/products/${item._id}`)
             console.log(testy1)
         }}

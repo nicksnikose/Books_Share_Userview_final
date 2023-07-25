@@ -350,7 +350,7 @@ exports.sendOtp = async (req, res) => {
     secureConnection: false,
     auth: {
       user: "swapnilnikose04@gmail.com",
-      pass: "tohkrtkrjjcktraw",
+      pass: "agbnlvtoepimczxx",
     },
   });
 

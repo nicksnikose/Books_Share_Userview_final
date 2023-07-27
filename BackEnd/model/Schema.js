@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs')
 
 // create schema
-const salt=bcrypt.genSaltSync(10)
+const salt = bcrypt.genSaltSync(10)
 
 const signupSchema = new Schema({
     firstName: {
@@ -74,6 +74,7 @@ const productSchema = new Schema({
 
 
 
+
 const cartSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -94,6 +95,21 @@ const cartSchema = new Schema({
     default: Date.now
   }
 });
+
+const visualizationSchema  = new Schema({
+  BuyBook : {
+    type: Number,
+  },
+  SellBook:{
+    type: Number,
+  },
+  DonateBook:{
+    type: Number,
+  },
+  Month:{
+    type: String,
+  }
+})
 
 signupSchema.pre('save', function(next) {
     if (this.isModified('password')) { // check if password is modified then has it
@@ -122,9 +138,11 @@ const Signup = mongoose.model('signup',signupSchema);
 
 const Addcart = mongoose.model('addcart',cartSchema);
 const Products = mongoose.model('products',productSchema);
+const visualization = mongoose.model('visualization',visualizationSchema);
 
 module.exports = {
   Signup,
   Addcart,
   Products,
+  visualization
 };

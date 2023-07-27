@@ -4,10 +4,12 @@ const mongoose=require("mongoose")
 const cors = require('cors');
 const jwt = require("jsonwebtoken")
 
+
 const productRoutes =require("./Router/productRoutes")
 const userRoutes =require("./Router/userRoutes")
 const adminRoutes =require("./Router/adminRoutes")
 const CartRoutes = require("./Router/cartRoutes")
+const visualizationRoutes = require("./Router/visualizationRoutes")
 
 
 
@@ -28,6 +30,7 @@ app.use("/", CartRoutes)
 app.use("/", adminRoutes)
 app.use("/",userRoutes);
 app.use("/", productRoutes)
+app.use("/", visualizationRoutes)
 
 
 app.use(function(err,req,res,next){

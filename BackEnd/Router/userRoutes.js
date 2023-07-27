@@ -60,12 +60,17 @@ router
 //   .put("/users/:id/video", upload.single("video"), userController.updateUserVideo)
 //   .put("/users/:id/pdf", upload.single("pdf"), userController.updateUserpdf)
 
+
+router
+  .route("/send")
+  .post(userController.send)
+     
 router
   .route("/sendotp")
   .post(userController.sendOtp)
      
 router
   .route("/submitotp")
-//   .post(userController.submitOtp)
+  .post(userController.submitOtp)
      
 module.exports = router;

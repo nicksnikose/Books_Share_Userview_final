@@ -101,11 +101,9 @@ exports.updateprofile = async(req,res)=>{
         res.status(404).json({ message: 'user Not Found'});
       } else {
         res.status(200).json({
-         
               data: {
                 user
               }
-
         });
       }
     } catch (err) {

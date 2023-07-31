@@ -96,7 +96,7 @@ export default function Example({ product }) {
                 <span className="text-[#503E3E] text-[14px] pe-[20px]">
                   <strike>₹ {item.price*2}</strike>
                 </span>
-                <span className="text-black text-[18px]">₹ {item.price} </span>
+                <span className="text-black text-[18px]">₹ {parseInt(item.price)+parseInt(item.price*0.2)} </span>
                 </Typography>
               </CardBody>
               <CardFooter className="pt-0">

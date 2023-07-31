@@ -1,60 +1,83 @@
-/* eslint-disable react/no-unescaped-entities */
-import { RxCross1 } from "react-icons/rx";
-import { Select, Option, Button } from "@material-tailwind/react";
-import { useFormik } from "formik";
+import { Option, Button , Select } from "@material-tailwind/react";
+import { useState, useEffect } from "react";
+
+import { useForm } from "react-hook-form";
+import { selectLoggedInUser } from "../features/auth/authSlice";
+import {
+  selectProduct,
+  createProductAsync,
+} from "../features/product/productSlice";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const initialValues = {
-  fname: "",
-  lname: "",
-  email: "",
-  mono: "",
-  addr: "",
-  state: "",
-};
-const DonorForm = () => {
-  const { values, handleBlur, handleChange, handleSubmit } = useFormik({
-    initialValues: initialValues,
-    onSubmit: (values) => {
-      console.log(
-        "files file:  registration.jsx ~  line 11 ~ registration ~ values",
-        values
-      );
-    },
+const BookSellForm = () => {
+  const [productData, setProductData] = useState({
+    title: '',
+    description: '',
+    price: '',
+    noofbooks: '',
+    img: null,
   });
+  const user = useSelector(selectLoggedInUser)
+  const dispatch = useDispatch()
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setProductData({ ...productData, [name]: value });
+    setSelectedCity({ ...productData, [name]: value });
+  };
+
+  const handleFileChange = (e) => {
+    setProductData({ ...productData, img: e.target.files[0]});
+  };
+
+const navigate = useNavigate()
+const [selectedCity, setSelectedCity] = useState("");
 
   return (
-    <div>
-      <div className="container max-w-2xl border-spacing-2 border rounded-md  mt-3 p-4 shadow bg-[#FFEADD]">
-        {/* heading */}
-        <div className="pb-6 flex items-center">
-          <Link to="/">
-            <img
-              src="./logo1.png"
-              className="lg:w-20 w-11 h-11 lg:h-16 -m-2"
-              alt=""
-            />
-          </Link>
-          <h2 className=" lg:p-4  lg:text-[28px] md:text-[24px] ms-8 lg:ms-20 text-[20px]">
-            BooksShare - Donators Form{" "}
-          </h2>
-        </div>
+   
+     
+      <form
+          action=""
+          onSubmit={async(e)=>{
+            e.preventDefault();
 
-        {/* form */}
-        <form action="" onSubmit={handleSubmit}>
-          <div className="">
+            try {
+              const formData = new FormData();
+              formData.append('title', productData.title);
+              formData.append('description', productData.description);
+              formData.append('city', productData.city);
+              // formData.append('price', productData.price);
+              formData.append('noofbooks', productData.noofbooks);
+              formData.append('created', user._id);
+              formData.append('img', productData.img);
+        
+              // Make the API request to create the product
+              const response = await axios.post('http://localhost:5000/donate/', formData, {
+                headers: {
+                  'Content-Type': 'multipart/form-data',
+                },
+              });
+        
+              // Handle the response (e.g., show success message, redirect, etc.)
+              console.log('Product created:', response.data);
+              navigate('/myproduct')
+            } catch (error) {
+              console.error('Error creating product:', error);
+            }
+          }}
+        >
+          {/* <div className="">
             <div className="grid lg:grid-cols-2 md:grid-cols-2  grid-cols-1 gap-3">
               <div className="lg:text-[20px] text-[18px]">
                 <label htmlFor="">First Name</label>
                 <input
                   required
-                  type="text"
-                  id="fname"
-                  name="fname"
-                  value={values.fname}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={user.firstName}
                   className="w-full border border-black rounded ps-2 shadow-md "
                 />
               </div>
@@ -62,26 +85,17 @@ const DonorForm = () => {
               <div className="lg:text-[20px] text-[18px]">
                 <label htmlFor="">Title</label>
                 <input
-                  required
                   type="text"
-                  name="lname"
-                  id="lname"
-                  value={values.lname}
+                  name="title"
                   onChange={handleChange}
-                  onBlur={handleBlur}
                   className="w-full border border-black rounded ps-2  shadow-md"
                 />
               </div>
               <div className="lg:text-[20px] text-[18px]">
                 <label htmlFor="">E-mail</label>
                 <input
-                  required
                   type="text"
-                  name="email"
-                  id="email"
-                  value={values.email}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={user.email}
                   className="w-full border border-black rounded ps-2  shadow-md"
                 />
               </div>
@@ -90,13 +104,7 @@ const DonorForm = () => {
                 <label htmlFor="">Mobile Number</label>
                 <input
                   type="text"
-                  required
-                  name="mono"
-                  id="mono"
-                  maxLength={10}
-                  value={values.mono}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
+                  value={user.phone}
                   className="w-full border border-black rounded ps-2 shadow-md"
                 />
               </div>
@@ -106,71 +114,84 @@ const DonorForm = () => {
                   Description
                 </label>
                 <textarea
-                  name="addr"
-                  id="addr"
-                  value={values.addr}
+                name="description"
                   onChange={handleChange}
-                  onBlur={handleBlur}
+                  id=""
                   rows="3"
-                  className="w-full border border-black rounded ps-2"
-                ></textarea>{" "}
+                  className="w-full border border-black rounded ps-2 shadow-md"
+                ></textarea>
               </div>
-              <div className="     lg:text-[20px] text-[18px] gap-3">
-                <div className="mb-4">
+              <div className="     lg:text-[20px] text-[18px]">
+                <div>
                   <label htmlFor="">Pin Code </label>
                   <br />
                   <input
-                    type="text"
+                  
                     maxLength={6}
-                    className="  border border-black rounded ps-2 shadow-md"
+                    className="  border border-black rounded mb-3 ps-2 shadow-md"
                   />
                 </div>
                 <div>
                   <label htmlFor="">City in Maharashtra </label>
-                  <div className="flex mt-1 flex-col gap-6">
+                  <div className="flex  flex-col gap-6">
+                   
                     <Select
-                      name="state"
-                      color="green"
-                      className="  border bg-white rounded border-black"
-                    >
-                      <Option>Nagpur </Option>
-                      <Option>Wardha </Option>
-                      <Option>Yavatmal </Option>
-                      <Option>Nashik </Option>
-                      <Option>Amravati </Option>
+                      className="  border rounded bg-white "
+                      label="select city"
+                     >
+                      <Option value="Nagpur">Nagpur</Option>
+                      <Option value="Wardha">Wardha</Option>
+                      <Option value="Yavatmal">Yavatmal</Option>
+                      <Option value="Nashik">Nashik</Option>
+                      <Option value="Amravati">Amravati</Option>
                     </Select>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </div> */}
 
           {/* address */}
 
-          <div className="grid lg:grid-cols-2 grid-cols-1 md:grid-cols-2 md:mt-4 gap-y-4">
+          {/* <div className="grid lg:grid-cols-2 grid-cols-1 md:grid-cols-2 md:mt-4 gap-y-4">
             <div className="lg:text-[20px] text-[18px] ">
-              <label htmlFor="">Image of Book's</label>
-              <br />
-              <input type="file" className="shadow-md w-60 " />
-            </div>{" "}
-            <div className="lg:text-[20px] text-[18px] ">
-              <label htmlFor="">No. of Book's</label>
+              <label htmlFor=""> No. of Book's</label>
               <br />
               <input
                 type="number"
+                required
+                name="noofbooks"
+                onChange={handleChange}
                 className="w-52 border border-black rounded ps-2 shadow-md"
               />
             </div>
-          </div>
+            <div className="lg:text-[20px] text-[18px] ">
+              <label htmlFor=""> Price of Books</label>
+              <br />
+              <input
+                type="number"
+                required
+                name="price"
+                onChange={handleChange}
+                className="w-52 border border-black rounded ps-2 shadow-md"
+              />
+            </div>
+          </div> */}
 
-          <div>
+ 
+          {/* <ToastContainer />
+        */}
+        
+      
+
+        {/* <div>
             <center className="py-6">
               <Link to="/store">
                 <Button className="bg-[#f05345] font-normal px-4 py-2  text-white lg:text-[18px] text-[14px]">
                   Cancel{" "}
                 </Button>
               </Link>
-
+            
               <Button
                 color="green"
                 type="submit"
@@ -180,19 +201,189 @@ const DonorForm = () => {
               </Button>
             </center>
           </div>
-          <ToastContainer />
-        </form>
+      <div className="lg:text-[20px] text-[18px] ">
+        <label htmlFor="img">Image of Book's</label><br />
+        <input
+          type="file"
+          name="img"
+          onChange={handleFileChange}
+          className="shadow-md w-60"
+          accept="image/*"
+          />
+      </div> */}
 
-        <div className="lg:text-[14px] text-[12px] ">
-          <h6>
-            For courier the books to us at :- G-5 Anand Rajani Apartment, IT
-            park pin Code : 440022
-          </h6>
-          {/* <h6>Or Our Courier Boys Will Reached to  and Pick Up The Books.</h6> */}
-        </div>
-      </div>
-    </div>
+      {/* <Button variant="primary" type="submit">
+        Submit
+      </Button> */}
+
+
+
+<div className="py-5">
+              <div className="bg-[#f3c4cc] container max-w-2xl shadow-md p-3 rounded-md">
+          
+             
+             
+            <div className="grid lg:grid-cols-2 md:grid-cols-2  grid-cols-1 gap-3 p-3 ">
+                <div className="lg:text-[20px] text-[18px]">
+                       <span> <img src="./logo1.png"  alt="logo" className="img-fluid"/> </span>
+                  </div>
+                  <div className="lg:text-[20px] text-[18px] lg:ml-[-70px] md:ml-[-50px] mt-2">
+                       <span className="lg:text-[30px] text-[30px] lg:ml-[-70px] md:ml-[-50px] ">BooksShare-Sellers Form </span>
+                  </div>
+
+              <div className="lg:text-[20px] text-[18px]">
+                <label htmlFor="">First Name</label>
+                <input
+                  required
+                  value={user.firstName}
+                  className="w-full border border-black rounded ps-2 shadow-md "
+                />
+              </div>
+
+              <div className="lg:text-[20px] text-[18px]">
+                <label htmlFor="">Title</label>
+                <input
+                  type="text"
+                  name="title"
+                  onChange={handleChange}
+                  className="w-full border border-black rounded ps-2  shadow-md"
+                />
+              </div>
+              <div className="lg:text-[20px] text-[18px]">
+                <label htmlFor="">E-mail</label>
+                <input
+                  type="text"
+                  value={user.email}
+                  className="w-full border border-black rounded ps-2  shadow-md"
+                />
+              </div>
+
+              <div className="lg:text-[20px] text-[18px]">
+                <label htmlFor="">Mobile Number</label>
+                <input
+                  type="text"
+                  value={user.phone}
+                  className="w-full border border-black rounded ps-2 shadow-md"
+                />
+              </div>
+
+              <div className="lg:text-[18px] text-[16px]">
+                <label htmlFor="" className="">
+                  Description
+                </label>
+                <textarea
+                name="description"
+                  onChange={handleChange}
+                  id=""
+                  rows="3"
+                  className="w-full border border-black rounded ps-2 shadow-md"
+                ></textarea>
+              </div>
+              <div className=" lg:text-[20px] text-[18px]">
+                <div>
+                  <label htmlFor="">Pin Code </label>
+                  <br />
+                  <input
+                  
+                    maxLength={6}
+                    className="  border border-black rounded mb-3 ps-2 shadow-md"
+                  />
+                </div>
+                <div>
+                  <label htmlFor="">City in Maharashtra </label>
+                  <div className="flex  flex-col gap-6">
+                   
+                   <Select
+                      className="border rounded bg-white "
+                      label="select " name="city" value={selectedCity}  onChange={handleChange}
+                     >
+                      <Option value="Nagpur" name="Nagpur">Nagpur</Option>
+                      <Option value="Wardha" name="Wardha">Wardha</Option>
+                      <Option value="Yavatmal" name="Yavatmal">Yavatmal</Option>
+                      <Option value="Nashik" name="Nashik">Nashik</Option>
+                      <Option value="Amravati" name="Amravati">Amravati</Option>
+                    </Select> 
+                   
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+
+          {/* address */}
+
+          <div className="grid lg:grid-cols-2 grid-cols-1 md:grid-cols-2  p-3 justify-center ">
+                <div className="lg:text-[20px] text-[18px] ">
+                    <label htmlFor="img">Image of Book's</label><br />
+                    <input
+          type="file"
+          name="img"
+          onChange={handleFileChange}
+          className="shadow-md w-60"
+          accept="image/*"
+          />
+                  </div>
+                  <div className="lg:text-[20px] text-[18px] mt-4 my-3 ">
+                         
+                  </div>
+
+                  <div className="lg:text-[20px] text-[18px] mt-4 ">
+                        <label htmlFor=""> No. of Book's</label>
+                        <br />
+                        <input
+                          type="number"
+                          required
+                          name="noofbooks"
+                          onChange={handleChange}
+                          className="w-52 border border-black rounded ps-2 shadow-md"
+                        />
+                      </div>
+
+                  {/* <div className="lg:text-[20px] text-[18px] mt-4">
+                    <label htmlFor=""> Price of Books</label>
+                    <br />
+                    <input
+                      type="number"
+                      required
+                      name="price"
+                      onChange={handleChange}
+                      className="w-52 border border-black rounded ps-2 shadow-md"
+                    />
+                  </div>                      */}
+     
+              </div>
+               
+                    <center className="py-3">
+                      <Link to="/store">
+                        <Button className="bg-[#f05345] font-normal px-4 py-2  text-white lg:text-[18px] text-[14px]">
+                          Cancel{" "}
+                        </Button>
+                      </Link>
+                    
+                     
+                    
+                      <Button
+                        color="green"
+                        type="submit"
+                        className="bg-[#81A356] font-normal px-4 py-2 lg:ms-8 ms-2 lg:text-[18px] text-[14px]"
+                      >
+                        Submit
+                      </Button>
+                    
+                   <div className="lg:text-[14px] text-[12px] py-3">
+                        <span className="lg:text-[14px] text-[12px] text-center">For courier the books to us at :- G-5 Anand Rajani Apartment, IT park pin Code : 440022</span>
+                       
+                      </div>
+                   </center>
+          {/* <ToastContainer /> */}    
+
+          </div> 
+  
+  </div> 
+          </form>
+  
   );
 };
 
-export default DonorForm;
+
+export default BookSellForm;

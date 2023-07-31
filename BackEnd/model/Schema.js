@@ -70,6 +70,8 @@ const productSchema = new Schema({
   bargain:{type:String,default:"no"},
   message:{type:String,default:"Pending"},
   created: { type: mongoose.Schema.Types.ObjectId, ref: 'Signup', required: true },
+  type:{type:String,default:"sell"}
+
 })
 
 
